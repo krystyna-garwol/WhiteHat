@@ -1,0 +1,53 @@
+body {
+    background-color: #fcfcfc;
+}
+
+.images {
+    max-width: 500px;
+    max-height: 500px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 30px;
+}
+
+nav a {
+    text-transform: uppercase;
+    padding-right: 20px;
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+nav {
+    text-align: center;
+}
+
+h1 {
+    text-transform: uppercase;
+    text-align: center;
+    margin-top: 3em;
+}
+
+h3 {
+    text-align: center;
+    margin-top: 3em;
+    font-style: italic;
+}
+ 
+.wrapper {
+    text-align: center;
+    margin: 10px;
+}
+
+button {
+    padding: 2em;
+    width: 12em;
+    text-transform: uppercase;
+    font-weight: bold;
+    background-color: #c1c1c1;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+}
+

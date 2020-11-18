@@ -1,0 +1,16 @@
+<main>
+    <div class="card card-crud">
+            <form action="/restaurants/{{restaurant.id}}/menus/{{menu.id}}/items" method="POST">
+            <p id="menu-title">Add New Item</p>
+            <div class="form-content">
+                <label>Item Name</label></br>
+                <input class="input-crud" name="name" placeholder="Your new item name" required>
+            </div>
+            <div class="form-content">
+                <label>Item Price</label></br>
+                <input class="input-crud" name="price" placeholder="Your new item price" required>
+            </div>
+            <button class="btn-add"><i class="fas fa-plus"></i>&nbsp; Add Item</button> 
+        </form>
+    </div>
+</main>

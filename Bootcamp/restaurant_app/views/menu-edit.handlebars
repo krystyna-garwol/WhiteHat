@@ -1,0 +1,12 @@
+<main>
+    <div class="card card-crud">
+        <form action="/restaurants/{{menu.RestaurantId}}/menus/{{menu.id}}" method="POST">
+            <p id="menu-title">Update Menu</p>
+            <div class="form-content">
+                <label>Menu Title</label></br>
+                <input class="input-crud" name="title" value="{{menu.title}}" required>
+            </div>
+            <button class="btn-add"><i class="fas fa-check"></i>&nbsp; Update Menu</button> 
+        </form>
+        </div>
+</main>

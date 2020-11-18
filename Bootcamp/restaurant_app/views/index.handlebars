@@ -1,0 +1,32 @@
+<main>
+    <article class="grid4">
+        {{#each restaurants}}
+        <div class="card">
+            <div class="img" style="background-image: url({{this.image}})">
+            </div>
+            <div class="card-content">
+                <p class="card-p1">{{this.name}}</p>
+                <p id="menuLen" class="card-p2">{{this.menus.length}} {{pluralize this.menus}}</p>
+            </div>
+            <a href="/restaurants/{{this.id}}">
+            <button class="btn-main"><i class="fas fa-angle-right"></i>&nbsp; View Menu</button>
+            </a>
+        </div>
+        {{/each}}
+        <div class="card">
+            <form action="/restaurants" method="POST">
+            <p id="menu-title">Add New Restaurant</p>
+            <div class="form-content">
+                <label>Restaurant Name</label></br>
+                <input name="name" placeholder="Your restaurant name" required>
+            </div>
+            <div class="form-content">
+                <label>Restaurant Image</label></br>
+                <input name="image" type="url" placeholder="Your image" required>
+            </div>
+            <button class="btn-add"><i class="fas fa-plus"></i>&nbsp; Add Restaurant</button> 
+        </form>
+        </div>
+    </article>
+    </a>
+</main>

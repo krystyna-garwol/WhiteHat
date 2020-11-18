@@ -1,0 +1,75 @@
+<main>
+    {{!---HERO Section---}}
+    <div class="hero-image" style="background-image: url({{restaurant.image}})">
+        <div class="container">
+            <h1>Welcome to the {{restaurant.name}} restaurant!</h1>
+            <p>We currently have {{menus.length}} menus available.</p>
+        </div>
+    </div>
+
+{{!---MENU---}}
+    <article class="grid3">
+        {{#each menus}}
+        <div class="card-rest">
+            <div style="margin-bottom: 3rem;">
+            <p id="menu-title">{{this.title}}</p>
+            {{#each items}}
+            <div class="card-content">
+            <p class="card-p1">{{this.name}}&nbsp;<a href="/restaurants/{{../../restaurant.id}}/menus/{{this.MenuId}}/items/{{this.id}}/edit"><i style="color: #C0D9AF;" class="fas fa-check"></i></a>&nbsp;<a href="/restaurants/{{../../restaurant.id}}/menus/{{this.MenuId}}/items/{{this.id}}/delete"><i style="color: #ff5233;" class="fas fa-times"></i></a>&nbsp;</p>
+            <p class="card-p2">£{{this.price}}</p>
+            </div>
+            {{/each}}
+            </div>
+        
+            <div class="card-content-btn">
+            <a href="/restaurants/{{../restaurant.id}}/menus/{{this.id}}/edit">
+            <button style="margin-right: .5rem;" class="btn-menu-update"><i class="fas fa-check"></i>&nbsp; Menu</button> 
+            </a>
+            <a href="/restaurants/{{../restaurant.id}}/menus/{{this.id}}/delete">
+            <button style="margin-right: .5rem;" class="btn-menu-delete"><i class="fas fa-times"></i>&nbsp; Menu</button> 
+            <a href="/restaurants/{{../restaurant.id}}/menus/{{this.id}}/items">
+                <button class="btn-menu-add"><i class="fas fa-plus"></i>&nbsp; Item</button> 
+            </a>
+            </a>
+            </div>
+        </div>
+        {{/each}}
+{{!---Add new menu---}}
+        <div class="card">
+            <form action="/restaurants/{{restaurant.id}}/menus" method="POST">
+            <p id="menu-title">Add New Menu</p>
+            <div class="form-content">
+                <label>Menu Title</label></br>
+                <input name="title" placeholder="Your new menu title" required>
+            </div>
+            <button class="btn-add"><i class="fas fa-plus"></i>&nbsp; Add Menu</button> 
+        </form>
+        </div>
+    </article>
+
+{{!---Buttons---}}
+    <div class="btn-group">
+    <a onclick="toggleDeleteRest(event)">
+    <button class="btn-delete"><i class="fas fa-times"></i>&nbsp; Delete Restaurant</button>
+    </a>
+    <a href="/restaurants/{{restaurant.id}}/edit">
+    <button class="btn-update"><i class="fas fa-check"></i>&nbsp; Update Restaurant</button>
+    </a>
+    </a>
+    </div>
+
+{{!---RESTAURANT delete pop up card---}}
+    <div id="delete-rest" class="card-delete" style="display:none; width: 16rem">
+            <p id="p-delete">Are you sure you want to delete {{restaurant.name}}?</p>
+            <a href="/restaurants/{{restaurant.id}}/delete">
+                <button class="btn-main">Delete Restaurant</button> 
+            </a>
+    </div>
+</main>
+
+<script>
+    const toggleDeleteRest = (event) => {
+        const deleteRest = document.getElementById("delete-rest")
+        deleteRest.style.display = "block"
+    }
+</script>

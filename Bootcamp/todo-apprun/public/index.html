@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/apprun/dist/apprun-html.js"></script>
+    <title>To Do List</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/d02ce1600d.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <h1>TO DO LIST</h1>
+    <!--We need to add an id of the html element we want to insert our app to. This id will be inlcuded in teh app.start() function-->
+    <main id="app"></main>
+    
+    <script>
+        
+        const viewButton = task => task.status
+            ? `<button onclick="app.run('delete', ${task.id})">Delete</button>`
+            : `<button onclick="app.run('done', ${task.id})">Done</button>`
+        
+        const viewTask = task => `<li id="${task.id}" 
+        draggable="true" 
+        ondragstart="app.run('dragStart', event)"
+        class="${task.status ? 'done' : ''} ${task.complete ? 'complete' : ''}">${task.desc}</li>`
+
+
+    //STATE - contains all our data. Represents our current state.
+        const state = {
+            tasks: []
+        }
+
+
+    //VIEW - receives state as an argument and displays it as an HTML in the browser.
+    //Calling preventDefault() below prevents a page refresh, convenient when you don't want to send the form fields on the backend.
+        const view = state => `
+
+        <section>
+        <div id="add-section">
+            <form onsubmit="event.preventDefault(); app.run('add', this)">
+                <input class="input" name="desc" placeholder="Add a task" required>
+                <button><i class="fas fa-plus"></i>&nbsp; Add</button>
+            </form>
+        </div>
+
+
+        <div class="container">
+
+        <div id="box-add" class="box">
+            ${state.tasks.map(viewTask).join("")}
+        </div>
+
+        <div id="box-del" class="box" ondrop="app.run('drop', event)" ondragover="event.preventDefault()">
+            <div id="box-done" ondrop="app.run('complete', event)" ondragover="event.preventDefault()">
+            </div>
+        </div>
+        
+        </div>
+        </section>
+        `
+
+    //UPDATE - contains all the functions that interact with the state and trigger the state to render and serve the updated version of the HTML via the view. In our case we will put all the crud functions in here
+        const update = {
+            add: (state, form) => {
+                    const data = new FormData(form)
+                    // const task = new Task(data.get('desc'))
+                    // state.tasks.push(task)
+                    const task = {
+                        id: Math.random(),
+                        desc: data.get('desc'),
+                        status: 0, 
+                        complete: false
+                    }
+                    const postRequest = {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(task)
+                    }
+                    fetch('./tasks', postRequest).then(() => app.run('getTasks'))
+                    return state
+                },
+            done: (state, id) => {
+                const task = state.tasks.find((task) => {return task.id === String(id)})
+                task.status = 1
+                return state
+            },
+            delete: (state, id) => {
+                const index = state.tasks.findIndex(task => task.id == id)
+                state.tasks.splice(index, 1)
+                return state
+            },
+            dragStart: (state, event) => {
+                const id = event.target.id
+                event.dataTransfer.setData('text', id)
+                return state
+            },
+            drop: (state, event) => {
+                const id = event.dataTransfer.getData('text')
+                const index = state.tasks.findIndex(task => task.id == id)
+                state.tasks.splice(index, 1)
+                return state
+            },
+            complete: (state, event) => {
+                event.stopPropagation()
+                const id = event.dataTransfer.getData('text')
+                const task = state.tasks.find(task => task.id == id)
+                task.complete = true
+                return state
+            },
+            getTasks: async (state) => {
+                const tasks = await fetch('./tasks').then(res => res.json())
+                state.tasks = tasks
+                return state
+                }
+        }
+
+    //Initialise the app
+        app.start('app', state, view, update)
+
+        app.run('getTasks')
+         
+    </script>
+</body>
+</html>
