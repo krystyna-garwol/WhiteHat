@@ -1,0 +1,134 @@
+openapi: 3.0.0
+info:
+  title: Airports API
+  description: This is the OpenAPI for the airports.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: if you are using NodeJS your dev port might be 3000
+  - url: http://localhost:8080
+    description: if you are using Spring your dev port will be 8080
+  - url: https://airports-api.whitehatcoaches.org.uk
+    description: this is the production baseURL
+paths:
+  /airports:
+    get:
+      summary: Read all airports
+      description: Returns a list of all the airports
+      responses:
+        200:
+          description: An array of JSON objects that represent each airport
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Airport'
+        404:
+          description: An array of airports not found
+    post:
+      summary: Create a new airport
+      description: Add an airport to the existing array of the airports
+      requestBody:
+        required: true
+        content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Airport'
+      responses: 
+        201:
+          description: New airport created
+        400:
+          description: No airport provided to be added
+  /airports/{icao}:
+    get:
+      summary: Read a single airport
+      description: Get the single aiport from the airports array
+      parameters:
+        - in: path
+          name: icao
+          required: true
+          schema:
+            type: string
+      responses: 
+        200:
+          description: A JSON object that represents each airport
+        404:
+          description: Airport not found
+    put:
+      summary: Update existing airport
+      description: Update the aiport properties
+      parameters:
+        - in: path
+          name: icao
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Existing airport object to be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Airport'
+      responses: 
+        201:
+          description: Existing airport updated
+        404:
+          description: Airport not found
+    delete:
+      summary: Delete existing airport
+      description: Remove the aiport from the array of the airports
+      parameters:
+        - in: path
+          name: icao
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Existing airport deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Airport'
+        404:
+          description: Airport not found
+components:
+  schemas:
+    Airport:
+      type: object
+      properties:
+        icao:
+          type: string
+        iata:
+          type: string
+        name:
+            type: string
+        city:
+            type: string
+        state:
+            type: string
+        country:
+            type: string
+        elevation:
+            type: integer
+        lat:
+            type: number
+            format: double
+        lon:
+            type: number
+            format: double
+        tz:
+            type: string
+      example:
+        icao: "00AK"
+        iata: ""
+        name: "Lowell Field"
+        city: "Anchor Point"
+        state: "Alaska"
+        country: "US"
+        elevation: 450
+        lat: 59.94919968
+        lon: -151.695999146
+        tz: "America/Anchorage"
