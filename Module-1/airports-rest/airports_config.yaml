@@ -27,7 +27,7 @@ paths:
         404:
           description: An array of airports not found
     post:
-      summary: Create a new airport
+      summary: Create new airport
       description: Add an airport to the existing array of the airports
       requestBody:
         required: true

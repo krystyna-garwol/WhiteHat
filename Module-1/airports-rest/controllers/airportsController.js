@@ -11,12 +11,16 @@ const homepage = (req, res) => {
     res.send("This is the homepage for the airports.");
 }
 
-// const getAirports = (req, res) => {
-//     res.status(200).send(airports);
-// }
-
 const getAirports = (req, res) => {
-    res.status(200).send(airports);
+    const page = req.query.page;
+    const pageSize = req.query.pageSize;
+    const startIndex = (page - 1) * pageSize;
+    const endIndex = page * pageSize;
+    let airportsPaginated = airports.slice(startIndex, endIndex);
+    if (!page) {
+        res.status(200).send(airports);
+    }
+    res.status(200).send(airportsPaginated);
 }
 
 const getAirport = (req, res) => {

@@ -47,7 +47,7 @@ describe("My Airport server", () => {
       .set("Accept", "application/json")
       .expect("Content-Type", "application/json; charset=utf-8")
       .expect(res => {
-        expect(res.body.length).toBeGreaterThan(28000)
+        expect(res.body.length).toBe(25)
       })
       .expect(200, done)
   })
