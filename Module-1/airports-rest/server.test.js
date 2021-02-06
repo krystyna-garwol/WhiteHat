@@ -40,14 +40,14 @@ describe("Homepage", () => {
 });
 
 describe("My Airport server", () => {
-  //READ ALL
+  // READ ALL
   it("should read all the airports - status 200", (done) => {
     request(app)
       .get('/airports')
       .set("Accept", "application/json")
       .expect("Content-Type", "application/json; charset=utf-8")
       .expect(res => {
-        expect(res.body.length).toBe(25)
+        expect(res.body.length).toBeGreaterThan(28000)
       })
       .expect(200, done)
   })

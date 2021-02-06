@@ -17,10 +17,7 @@ const getAirports = (req, res) => {
     const startIndex = (page - 1) * pageSize;
     const endIndex = page * pageSize;
     let airportsPaginated = airports.slice(startIndex, endIndex);
-    if (!page) {
-        res.status(200).send(airports);
-    }
-    res.status(200).send(airportsPaginated);
+    (!page) ? res.status(200).send(airports) : res.status(200).send(airportsPaginated);
 }
 
 const getAirport = (req, res) => {
