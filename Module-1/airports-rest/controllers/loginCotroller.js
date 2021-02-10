@@ -1,25 +1,12 @@
-const User = require('../models/userModel');
-const bcrypt = require('bcrypt');
+// const User = require('../models/userModel');
+// const bcrypt = require('bcrypt');
 
 const loginUser = (req, res) => {
+    if (!req.session.userId) {
+        req.session.userId = `${req.auth.user}123!`;
+    }
 
-    const { username, password } = req.body;
-
-    const user = User.findOne({ username: username }, (err, user) => {
-        if (!user)
-            return res.status(404).send('No user found')
-
-        bcrypt.compare(password, user.password, (err, same) => {
-            if (!same) {
-                return res.status(401).send(`Incorrect password`)
-            }
-            if (same) {
-                req.session.userId = user._id
-                return res.status(200).send(`You are logged in.`)
-            }
-        })
-
-    })
+    res.status(200).send(`You are logged in ${req.auth.user}. Now you can call other API routes.`)
 }
 
 module.exports = { loginUser }

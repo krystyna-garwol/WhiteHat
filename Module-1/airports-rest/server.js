@@ -42,14 +42,14 @@ app.use(session({
 
 
 
-basicAuth({
+const basicAuthOptions = {
   authorizer: customAuthoriser,
   authorizeAsync: true,
   challenge: true,
   unauthorizedResponse: req => {
     return `Sorry, but you are not authorised to view this resource.`;
   },
-})
+}
 
 
 //Airports routes
@@ -76,7 +76,7 @@ app.put('/users/:id', updateUser)
 
 app.delete('/users/:id', deleteUser)
 
-app.post('/login', loginUser)
+app.post('/login', basicAuth(basicAuthOptions), loginUser)
 
 app.get('/logout', logoutUser)
 
