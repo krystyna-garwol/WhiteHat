@@ -7,9 +7,6 @@ const save = () => {
     })
 }
 
-const homepage = (req, res) => {
-    res.send("This is the homepage for the airports.");
-}
 
 const getAirports = (req, res) => {
     const page = req.query.page;
@@ -57,4 +54,4 @@ const deleteAirport = (req, res) => {
     (found) ? res.status(200).send(found) : res.status(404).send('Airport not found');
 }
 
-module.exports = { getAirports, getAirport, addAirport, updateAirport, deleteAirport, homepage }
+module.exports = { getAirports, getAirport, addAirport, updateAirport, deleteAirport }

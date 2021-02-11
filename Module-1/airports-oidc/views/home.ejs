@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airports</title>
+    <link href="style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <div class="centered">
+        <% if (loggedIn) { %>
+            <h1>Welcome!</h1>
+            <h2>There are so many things you can do here:</h2>
+            <ul>
+                <li>Visit your
+                    <a href="/profile">profile</a>
+                </li>
+                <li>
+                    See first 25 out of more than 28,000 <a href="/airports?page=1&pageSize=25">airports</a>
+                </li>
+            </ul>
+            <p>Are you bored yet? be gone!</p>
+            <button><a href="/logout">Logout</a></button>
+            <% } else { %>
+                <button><a href="/login">Login</a></button>
+                <% } %>
+    </div>
+
+</body>
+
+</html>

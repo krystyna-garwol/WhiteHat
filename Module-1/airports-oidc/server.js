@@ -1,51 +1,45 @@
 const express = require("express");
 const app = express();
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const checkJwt = require('./middleware/jwt');
-const cors = require('cors');
-const { getAirports, getAirport, addAirport, updateAirport, deleteAirport, homepage } = require("./controllers/airportsController");
-const { getUsers, getUser, deleteUser, updateUser, addUser } = require("./controllers/usersController");
+const { getAirports, getAirport, addAirport, updateAirport, deleteAirport } = require("./controllers/airportsController");
+const { auth, requiresAuth } = require("express-openid-connect");
+const ejs = require("ejs");
 
-// connect to mongo
-mongoose.connect(
-  "mongodb://localhost/users",
-  {
-    useNewUrlParser: true,
-  },
-  () => {
-    console.log("Connected to MongoDB");
-  }
-);
+app.set("view engine", "ejs");
+app.use(express.static(__dirname + '/public'));
+
+const openIDconfig = {
+  authRequired: false,
+  auth0Logout: true,
+  secret: 'a long, randomly-generated string stored in env',
+  baseURL: 'http://localhost:3000',
+  clientID: 'ZVoDzfAjnPgEGXY3wNOyGxFSY1wE32PS',
+  issuerBaseURL: 'https://dev-c7kpmdkq.eu.auth0.com'
+};
+app.use(auth(openIDconfig));
 
 app.use(bodyParser.json())
 
-//permit our domans to load our resources
-app.use(cors())
-
-
 //Airports routes
-app.get("/", homepage)
+app.get("/airports", requiresAuth(), getAirports);
 
-app.get("/airports", checkJwt, getAirports);
+app.get("/airports/:icao", requiresAuth(), getAirport)
 
-app.get("/airports/:icao", checkJwt, getAirport)
+app.post("/airports", requiresAuth(), addAirport)
 
-app.post("/airports", checkJwt, addAirport)
+app.put("/airports/:icao", requiresAuth(), updateAirport)
 
-app.put("/airports/:icao", checkJwt, updateAirport)
+app.delete("/airports/:icao", requiresAuth(), deleteAirport)
 
-app.delete("/airports/:icao", checkJwt, deleteAirport)
 
-//User routes
-app.get('/users', getUsers)
+// protected profile route
+app.get("/profile", requiresAuth(), (req, res) => {
+  res.send(JSON.stringify(req.oidc.user));
+});
 
-app.get('/users/:id', getUser)
+app.get("/", (req, res) => {
+  res.render("home", { loggedIn: req.oidc.isAuthenticated() });
+});
 
-app.post('/users', addUser)
-
-app.put('/users/:id', updateUser)
-
-app.delete('/users/:id', deleteUser)
 
 module.exports = app;
